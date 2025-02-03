@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { clerkClient } from "@clerk/nextjs";
+import { clerkClient } from "@clerk/nextjs/server";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
@@ -69,10 +69,12 @@ export async function POST(req: Request) {
       photo: image_url,
     };
 
+    // @ts-ignore
     const newUser = await createUser(user);
 
     // Set public metadata
     if (newUser) {
+      // @ts-ignore
       await clerkClient.users.updateUserMetadata(id, {
         publicMetadata: {
           userId: newUser._id,
@@ -94,6 +96,7 @@ export async function POST(req: Request) {
       photo: image_url,
     };
 
+    // @ts-ignore
     const updatedUser = await updateUser(id, user);
 
     return NextResponse.json({ message: "OK", user: updatedUser });
